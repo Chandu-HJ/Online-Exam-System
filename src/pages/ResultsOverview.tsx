@@ -1,4 +1,4 @@
-import questions from "../data/questions.json";
+// import questions from "../data/questions.json";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { exams } from "../data/exams";

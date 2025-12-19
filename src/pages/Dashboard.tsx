@@ -25,7 +25,7 @@ function getRemainingTime(deadline: string) {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
+  const [search] = useState("");
   const [, forceUpdate] = useState(0);
 
   const pastResults = getAllExamResults();
