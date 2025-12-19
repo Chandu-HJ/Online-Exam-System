@@ -1,0 +1,328 @@
+[
+  {
+    "id": 1,
+    "examId": "react-basic-1",
+    "question": "What is React?",
+    "options": [
+      "A programming language",
+      "A JavaScript library for building UI",
+      "A database",
+      "A web server"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": 2,
+    "examId": "react-basic-1",
+    "question": "What is JSX?",
+    "options": [
+      "JavaScript XML",
+      "Java Syntax Extension",
+      "JSON XML",
+      "Java Source XML"
+    ],
+    "correctAnswer": 0
+  },
+  {
+    "id": 3,
+    "examId": "react-basic-1",
+    "question": "Which hook is used for state management?",
+    "options": ["useEffect", "useState", "useRef", "useMemo"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 4,
+    "examId": "react-basic-1",
+    "question": "Which hook runs after render?",
+    "options": ["useState", "useEffect", "useContext", "useReducer"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 5,
+    "examId": "react-basic-1",
+    "question": "React is maintained by?",
+    "options": ["Google", "Facebook", "Microsoft", "Amazon"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 6,
+    "examId": "react-basic-1",
+    "question": "Props are used for?",
+    "options": ["Styling", "Passing data", "Routing", "State"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 7,
+    "examId": "react-basic-1",
+    "question": "Which method renders JSX?",
+    "options": ["render()", "return()", "display()", "mount()"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 8,
+    "examId": "react-basic-1",
+    "question": "What is Virtual DOM?",
+    "options": [
+      "Copy of real DOM",
+      "Browser API",
+      "Database",
+      "JS engine"
+    ],
+    "correctAnswer": 0
+  },
+  {
+    "id": 9,
+    "examId": "react-basic-1",
+    "question": "Keys in React help with?",
+    "options": [
+      "Styling",
+      "Performance",
+      "Security",
+      "API calls"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": 10,
+    "examId": "react-basic-1",
+    "question": "Which hook accesses context?",
+    "options": ["useContext", "useMemo", "useRef", "useEffect"],
+    "correctAnswer": 0
+  },
+
+  {
+    "id": 101,
+    "examId": "javascript-core-1",
+    "question": "Which keyword declares a variable?",
+    "options": ["int", "var", "let", "Both var and let"],
+    "correctAnswer": 3
+  },
+  {
+    "id": 102,
+    "examId": "javascript-core-1",
+    "question": "What is closure?",
+    "options": [
+      "Function inside function",
+      "Block scope",
+      "Callback",
+      "Promise"
+    ],
+    "correctAnswer": 0
+  },
+  {
+    "id": 103,
+    "examId": "javascript-core-1",
+    "question": "Which type is NOT primitive?",
+    "options": ["string", "number", "object", "boolean"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 104,
+    "examId": "javascript-core-1",
+    "question": "Which operator checks value and type?",
+    "options": ["==", "=", "===", "!="],
+    "correctAnswer": 2
+  },
+  {
+    "id": 105,
+    "examId": "javascript-core-1",
+    "question": "What does NaN mean?",
+    "options": [
+      "Not a Name",
+      "Not a Number",
+      "New and Null",
+      "None"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": 106,
+    "examId": "javascript-core-1",
+    "question": "Array method to add element?",
+    "options": ["push", "pop", "shift", "slice"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 107,
+    "examId": "javascript-core-1",
+    "question": "Promise represents?",
+    "options": [
+      "Synchronous value",
+      "Async result",
+      "Loop",
+      "Callback"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": 108,
+    "examId": "javascript-core-1",
+    "question": "Which loop is guaranteed to run once?",
+    "options": ["for", "while", "do-while", "foreach"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 109,
+    "examId": "javascript-core-1",
+    "question": "Which keyword defines constant?",
+    "options": ["var", "let", "const", "static"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 110,
+    "examId": "javascript-core-1",
+    "question": "JSON stands for?",
+    "options": [
+      "JavaScript Object Notation",
+      "Java Syntax Object Notation",
+      "JS Object Name",
+      "None"
+    ],
+    "correctAnswer": 0
+  },
+
+  {
+    "id": 201,
+    "examId": "html-css-1",
+    "question": "HTML stands for?",
+    "options": [
+      "Hyper Text Markup Language",
+      "High Text Machine Language",
+      "Hyperlinks Text Mark Language",
+      "None"
+    ],
+    "correctAnswer": 0
+  },
+  {
+    "id": 202,
+    "examId": "html-css-1",
+    "question": "CSS stands for?",
+    "options": [
+      "Cascading Style Sheets",
+      "Creative Style System",
+      "Color Style Sheets",
+      "None"
+    ],
+    "correctAnswer": 0
+  },
+  {
+    "id": 203,
+    "examId": "html-css-1",
+    "question": "Which tag creates link?",
+    "options": ["<a>", "<link>", "<href>", "<url>"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 204,
+    "examId": "html-css-1",
+    "question": "Flexbox property for direction?",
+    "options": ["flex-flow", "flex-wrap", "flex-direction", "justify"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 205,
+    "examId": "html-css-1",
+    "question": "Which unit is relative?",
+    "options": ["px", "em", "cm", "mm"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 206,
+    "examId": "html-css-1",
+    "question": "Semantic tag?",
+    "options": ["<div>", "<span>", "<header>", "<b>"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 207,
+    "examId": "html-css-1",
+    "question": "CSS box model includes?",
+    "options": [
+      "Margin, Border, Padding, Content",
+      "Only content",
+      "Border only",
+      "None"
+    ],
+    "correctAnswer": 0
+  },
+  {
+    "id": 208,
+    "examId": "html-css-1",
+    "question": "Which property hides overflow?",
+    "options": ["display", "overflow", "visibility", "float"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 209,
+    "examId": "html-css-1",
+    "question": "Inline CSS uses?",
+    "options": ["class", "id", "style attribute", "file"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 210,
+    "examId": "html-css-1",
+    "question": "Which is block-level?",
+    "options": ["span", "img", "div", "a"],
+    "correctAnswer": 2
+  },
+  { "id": 301, "examId": "git-basics-1", "question": "Command to initialize a repository?", "options": ["git start", "git init", "git create", "git new"], "correctAnswer": 1 },
+  { "id": 302, "examId": "git-basics-1", "question": "How do you stage all changes?", "options": ["git add .", "git save", "git commit", "git push"], "correctAnswer": 0 },
+  { "id": 303, "examId": "git-basics-1", "question": "What is the default main branch name?", "options": ["primary", "master/main", "trunk", "root"], "correctAnswer": 1 },
+  { "id": 304, "examId": "git-basics-1", "question": "Command to see commit history?", "options": ["git history", "git log", "git show", "git list"], "correctAnswer": 1 },
+  { "id": 305, "examId": "git-basics-1", "question": "How to get updates from remote?", "options": ["git fetch", "git pull", "git receive", "Both fetch and pull"], "correctAnswer": 3 },
+
+  { "id": 401, "examId": "node-intro-1", "question": "What engine powers Node.js?", "options": ["SpiderMonkey", "V8", "Chakra", "Nitro"], "correctAnswer": 1 },
+  { "id": 402, "examId": "node-intro-1", "question": "How to import a built-in module?", "options": ["require()", "import()", "Both", "Fetch"], "correctAnswer": 2 },
+  { "id": 403, "examId": "node-intro-1", "question": "Which file manages dependencies?", "options": ["config.json", "package.json", "index.js", "app.js"], "correctAnswer": 1 },
+  { "id": 404, "examId": "node-intro-1", "question": "Global object in Node?", "options": ["window", "document", "global", "system"], "correctAnswer": 2 },
+  { "id": 405, "examId": "node-intro-1", "question": "Which module handles file paths?", "options": ["fs", "path", "url", "os"], "correctAnswer": 1 },
+
+  { "id": 501, "examId": "sql-basics-1", "question": "Which command retrieves data?", "options": ["GET", "SELECT", "FETCH", "READ"], "correctAnswer": 1 },
+  { "id": 502, "examId": "sql-basics-1", "question": "What does SQL stand for?", "options": ["Simple Query Language", "Structured Query Language", "Server Queue List", "None"], "correctAnswer": 1 },
+  { "id": 503, "examId": "sql-basics-1", "question": "How to filter results?", "options": ["WHERE", "FILTER", "SEARCH", "IF"], "correctAnswer": 0 },
+  { "id": 504, "examId": "sql-basics-1", "question": "Which key uniquely identifies a row?", "options": ["Foreign Key", "Unique Key", "Primary Key", "Index"], "correctAnswer": 2 },
+  { "id": 505, "examId": "sql-basics-1", "question": "Command to remove a table?", "options": ["DELETE", "REMOVE", "DROP", "ERASE"], "correctAnswer": 2 },
+
+  { "id": 601, "examId": "api-rest-1", "question": "Which HTTP method is for creating?", "options": ["GET", "PUT", "POST", "DELETE"], "correctAnswer": 2 },
+  { "id": 602, "examId": "api-rest-1", "question": "What does 404 status mean?", "options": ["Success", "Forbidden", "Not Found", "Server Error"], "correctAnswer": 2 },
+  { "id": 603, "examId": "api-rest-1", "question": "Statelessness is a principle of?", "options": ["REST", "SOAP", "GraphQL", "WebSockets"], "correctAnswer": 0 },
+  { "id": 604, "examId": "api-rest-1", "question": "Which HTTP method is Idempotent?", "options": ["POST", "GET", "PATCH", "None"], "correctAnswer": 1 },
+  { "id": 605, "examId": "api-rest-1", "question": "What does 'A' in AJAX stand for?", "options": ["Advanced", "Asynchronous", "Array", "Application"], "correctAnswer": 1 },
+
+  { "id": 701, "examId": "testing-basics-1", "question": "What is 'Unit Testing'?", "options": ["Testing whole app", "Testing small parts", "Testing database", "UI testing"], "correctAnswer": 1 },
+  { "id": 702, "examId": "testing-basics-1", "question": "Jest function to group tests?", "options": ["group()", "describe()", "category()", "set()"], "correctAnswer": 1 },
+  { "id": 703, "examId": "testing-basics-1", "question": "What is a 'mock'?", "options": ["A bug", "Fake implementation", "Test runner", "Error log"], "correctAnswer": 1 },
+  { "id": 704, "examId": "testing-basics-1", "question": "TDD stands for?", "options": ["Total Data Design", "Test Driven Development", "Technical Design Doc", "None"], "correctAnswer": 1 },
+  { "id": 705, "examId": "testing-basics-1", "question": "Jest keyword for assertions?", "options": ["assert", "expect", "verify", "check"], "correctAnswer": 1 },
+
+  { "id": 801, "examId": "tailwind-css-1", "question": "Tailwind is what type of framework?", "options": ["Component-based", "Utility-first", "Semantic", "Inline-only"], "correctAnswer": 1 },
+  { "id": 802, "examId": "tailwind-css-1", "question": "How to set margin-top in Tailwind?", "options": ["margin-t-4", "mt-4", "m-top-4", "t-margin-4"], "correctAnswer": 1 },
+  { "id": 803, "examId": "tailwind-css-1", "question": "Hover state syntax?", "options": ["hover-bg-red", "hover:bg-red-500", "on-hover:red", "@hover-red"], "correctAnswer": 1 },
+  { "id": 804, "examId": "tailwind-css-1", "question": "Config file name?", "options": ["tailwind.config.js", "tw.js", "style.config.js", "tailwind.json"], "correctAnswer": 0 },
+  { "id": 805, "examId": "tailwind-css-1", "question": "How to apply custom colors?", "options": ["In CSS file", "In config theme", "Hardcode in HTML", "Not possible"], "correctAnswer": 1 },
+
+  { "id": 901, "examId": "nextjs-intro-1", "question": "Next.js is a framework for?", "options": ["Vue", "Angular", "React", "Svelte"], "correctAnswer": 2 },
+  { "id": 902, "examId": "nextjs-intro-1", "question": "What is SSR?", "options": ["Static Site React", "Server Side Rendering", "Simple Site Render", "System Service Run"], "correctAnswer": 1 },
+  { "id": 903, "examId": "nextjs-intro-1", "question": "Which folder handles routing?", "options": ["routes", "src", "pages or app", "components"], "correctAnswer": 2 },
+  { "id": 904, "examId": "nextjs-intro-1", "question": "Component for optimized images?", "options": ["<img>", "<NextImage>", "<Image />", "<Picture>"], "correctAnswer": 2 },
+  { "id": 905, "examId": "nextjs-intro-1", "question": "How to define a dynamic route?", "options": [":id", "[id]", "{id}", "*id"], "correctAnswer": 1 },
+
+  { "id": 1001, "examId": "web-security-1", "question": "What is XSS?", "options": ["Cross Site Scripting", "XML Site Service", "X-ray Site Scan", "None"], "correctAnswer": 0 },
+  { "id": 1002, "examId": "web-security-1", "question": "What does HTTPS add?", "options": ["Speed", "Encryption (SSL/TLS)", "Style", "Storage"], "correctAnswer": 1 },
+  { "id": 1003, "examId": "web-security-1", "question": "Purpose of CORS?", "options": ["Styling", "Resource sharing security", "Database link", "Caching"], "correctAnswer": 1 },
+  { "id": 1004, "examId": "web-security-1", "question": "JWT stands for?", "options": ["Java Web Token", "JSON Web Token", "Just Web Task", "Joint Web Tool"], "correctAnswer": 1 },
+  { "id": 1005, "examId": "web-security-1", "question": "Strongest way to store passwords?", "options": ["Plain text", "MD5 hashing", "Salted Hashing (bcrypt)", "Base64"], "correctAnswer": 2 },
+
+  { "id": 1101, "examId": "linux-cli-1", "question": "Command to list files?", "options": ["dir", "ls", "show", "list"], "correctAnswer": 1 },
+  { "id": 1102, "examId": "linux-cli-1", "question": "How to change directory?", "options": ["cd", "move", "goto", "ch"], "correctAnswer": 0 },
+  { "id": 1103, "examId": "linux-cli-1", "question": "Command to create a folder?", "options": ["touch", "mkdir", "newdir", "create"], "correctAnswer": 1 },
+  { "id": 1104, "examId": "linux-cli-1", "question": "What does 'sudo' mean?", "options": ["Super User Do", "System Update", "Standard User", "None"], "correctAnswer": 0 },
+  { "id": 1105, "examId": "linux-cli-1", "question": "Command to see current path?", "options": ["path", "whereami", "pwd", "loc"], "correctAnswer": 2 },
+
+  { "id": 1201, "examId": "performance-1", "question": "What is 'Lighthouse'?", "options": ["A server", "Audit tool", "CSS library", "Database"], "correctAnswer": 1 },
+  { "id": 1202, "examId": "performance-1", "question": "What is 'Lazy Loading'?", "options": ["Slow internet", "Loading on demand", "Caching", "Minification"], "correctAnswer": 1 },
+  { "id": 1203, "examId": "performance-1", "question": "Removing whitespace from code?", "options": ["Compression", "Minification", "Uglify", "Both Minification & Uglify"], "correctAnswer": 3 },
+  { "id": 1204, "examId": "performance-1", "question": "What is a CDN?", "options": ["Content Delivery Network", "Code Data Node", "Core Digital Net", "None"], "correctAnswer": 0 },
+  { "id": 1205, "examId": "performance-1", "question": "Benefit of HTTP caching?", "options": ["Security", "Reduces server load", "Prettier UI", "Easier coding"], "correctAnswer": 1 }
+]

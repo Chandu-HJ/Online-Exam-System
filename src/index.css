@@ -1,0 +1,194 @@
+/* index.css - Modern Exam System Styles (Greenish Palette) */
+
+:root {
+  /* =====================
+     COLOR PALETTE
+     ===================== */
+  --primary: #3a606e;        /* Dark teal */
+  --primary-dark: #2f4f59;
+  --secondary: #607b7d;      /* Teal gray */
+  --accent: #aaae8e;         /* Olive */
+  --muted: #828e82;
+
+  --success: #4caf50;
+  --danger: #b91c1c;
+  --warning: #f59e0b;
+
+  --gray: #6b7280;
+  --light-gray: #f3f4f6;
+
+  --bg: #e0e0e0;             /* Page background */
+  --card-bg: #ffffff;
+  --border: #d1d5db;
+
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  --transition: all 0.25s ease;
+}
+
+/* =====================
+   RESET
+   ===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =====================
+   BASE STYLES
+   ===================== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg);
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+/* =====================
+   BUTTONS
+   ===================== */
+button {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button.primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+button.primary:hover {
+  background-color: var(--primary-dark);
+}
+
+button.secondary {
+  background-color: var(--light-gray);
+  color: #475569;
+}
+
+button.danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+/* =====================
+   LAYOUT HELPERS
+   ===================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mt-2 { margin-top: 2rem; }
+
+/* =====================
+   CARDS
+   ===================== */
+.card {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 2rem;
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Exam-specific card accent */
+.exam-card {
+  border-left: 6px solid var(--secondary);
+}
+
+/* =====================
+   BADGES
+   ===================== */
+.badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(76, 175, 80, 0.15);
+  color: #2e7d32;
+}
+
+.badge-danger {
+  background: rgba(185, 28, 28, 0.12);
+  color: var(--danger);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+}
+
+/* =====================
+   DARK MODE
+   ===================== */
+body[data-theme="dark"] {
+  --bg: #1f2933;
+  --card-bg: #2b3a3f;
+  --border: #3f4f55;
+  --text: #e5e7eb;
+}
+
+body[data-theme="dark"] {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body[data-theme="dark"] .card {
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4 {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] button.secondary {
+  background-color: #374151;
+  color: #e5e7eb;
+}

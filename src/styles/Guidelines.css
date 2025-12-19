@@ -1,0 +1,33 @@
+.guidelines-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.guidelines-card {
+  background: var(--card-bg, white);
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.guidelines-title {
+  margin-bottom: 1.5rem;
+}
+
+.guidelines-list {
+  margin-top: 1.5rem;
+  line-height: 1.8;
+  padding-left: 1.2rem;
+}
+
+.guidelines-agreement {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guidelines-start-btn {
+  margin-top: 2rem;
+}

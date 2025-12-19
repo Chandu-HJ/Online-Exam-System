@@ -1,0 +1,145 @@
+/* =======================
+   PAGE LAYOUT
+   ======================= */
+
+.exams-page {
+  margin-left: 240px;
+  padding: 2rem 2.5rem;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+.page-title {
+  margin-bottom: 1.5rem;
+}
+
+/* =======================
+   STICKY SEARCH BAR
+   ======================= */
+
+.exam-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: 1rem 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Search input */
+.exam-search {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  background: var(--card-bg);
+}
+
+/* Dropdown */
+.exam-filter {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  background: var(--card-bg);
+  cursor: pointer;
+}
+
+/* =======================
+   EXAM LIST
+   ======================= */
+
+.exam-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* =======================
+   EXAM CARD
+   ======================= */
+
+.exam-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+.exam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exam-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.exam-meta {
+  margin-top: 0.8rem;
+  color: var(--text-muted);
+}
+
+.exam-actions {
+  margin-top: 1.2rem;
+}
+
+/* =======================
+   STATUS PILLS
+   ======================= */
+
+.exam-pill {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.exam-pill.upcoming {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.exam-pill.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.exam-pill.past {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.exam-pill.warning {
+  background: #fde68a;
+  color: #92400e;
+}
+
+/* =======================
+   EMPTY STATE
+   ======================= */
+
+.empty-text {
+  margin-top: 2rem;
+  color: var(--text-muted);
+}
+
+/* =======================
+   RESPONSIVE
+   ======================= */
+
+@media (max-width: 900px) {
+  .exams-page {
+    margin-left: 0;
+  }
+
+  .exam-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
