@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import questionsData from "../data/questions.json";
 import { calculateResult } from "../utils/score";
 import { saveExamResult } from "../utils/resultStorage";
+import { exams } from "../data/exams";
 
 
 
@@ -81,7 +82,8 @@ export function ExamProvider({ children }: { children: ReactNode }) {
     const [activeExamId, setActiveExamId] = useState<string | null>(null);
 
 
-    const duration = 300; // 30 minutes in seconds
+   const [duration, setDuration] = useState<number>(0);
+
 
 
     // Restoring exam data for resume
@@ -107,24 +109,29 @@ export function ExamProvider({ children }: { children: ReactNode }) {
 
     //  start exam function to start an exam
     const startExam = (examId: string) => {
-        setActiveExamId(examId);
+    setActiveExamId(examId);
 
-        const filteredQuestions = (questionsData as Question[]).filter(
-            (q) => q.examId === examId
-        );
+    const filteredQuestions = (questionsData as Question[]).filter(
+        (q) => q.examId === examId
+    );
+    setQuestions(filteredQuestions);
 
-        setQuestions(filteredQuestions);
+    const exam = exams.find((e) => e.id === examId);
 
-        const resumed = restoreExam(examId);
+    const resumed = restoreExam(examId);
 
-        if (!resumed) {
-            setAnswers({});
-            setCurrentQuestionIndex(0);
-            setExamStartTime(Date.now());
-            setViolations([]);
-            setExamStatus("ongoing");
-        }
-    };
+    if (!resumed) {
+        setAnswers({});
+        setCurrentQuestionIndex(0);
+        setExamStartTime(Date.now());
+        setViolations([]);
+        setExamStatus("ongoing");
+
+        //FIX: minutes → seconds
+        setDuration((exam?.duration ?? 30) * 60);
+    }
+};
+
 
     
 
