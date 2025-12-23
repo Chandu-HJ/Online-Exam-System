@@ -1,3 +1,5 @@
+// Exam.tsx - FINAL CLEAN VERSION
+
 import { useExam } from "../context/ExamContext";
 import { useTimer } from "../hooks/useTimer";
 import { useEffect, useState, useRef } from "react";
@@ -5,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useAutoSave } from "../hooks/useAutoSave";
 import { useProctoring } from "../hooks/useProctoring";
 import warningSound from "../assets/audio10.mp3";
+import { useWebcamProctoring } from "../hooks/useWebcamProctoring";
 import { useFaceProctoring } from "../hooks/useFaceProctoring";
+import type { ViolationType } from "../context/ExamContext";
 
 import "../styles/Exam.css";
 
 const MAX_VIOLATIONS = 5;
-const FACE_LIMIT = 5;
+const FACE_TIMEOUT = 5;
 
 function Exam() {
   const {
@@ -31,54 +35,88 @@ function Exam() {
 
   const navigate = useNavigate();
 
-  /* ================= TOAST ================= */
+  /* =======================
+     TOAST
+     ======================= */
   const [toast, setToast] = useState<{
     message: string;
     remaining: number;
   } | null>(null);
 
-  const addViolationWithToast = (type: any) => {
+  const addViolationWithToast = (type: ViolationType) => {
     addViolation(type);
+
+    const newCount = violations.length + 1;
+
     setToast({
       message: type.replace(/_/g, " "),
-      remaining: MAX_VIOLATIONS - (violations.length + 1),
+      remaining: Math.max(0, MAX_VIOLATIONS - newCount),
     });
-    setTimeout(() => setToast(null), 3000);
+
+    setTimeout(() => setToast(null), 4000);
   };
 
-  useEffect(() => {
-  if (violations.length >= MAX_VIOLATIONS) {
-    submitExam();
-    navigate("/");
+  /* =======================
+     FACE WARNING TIMER
+     ======================= */
+  const [faceWarning, setFaceWarning] = useState(false);
+  const [faceCountdown, setFaceCountdown] = useState(FACE_TIMEOUT);
+  const faceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startFaceTimer = () => {
+    if (faceTimerRef.current) return;
+
+    setFaceWarning(true);
+    setFaceCountdown(FACE_TIMEOUT);
+
+    faceTimerRef.current = setInterval(() => {
+      setFaceCountdown((prev) => {
+        if (prev === 1) {
+          clearInterval(faceTimerRef.current!);
+          faceTimerRef.current = null;
+          setFaceWarning(false);
+          addViolationWithToast("NO_FACE_DETECTED");
+          return FACE_TIMEOUT;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const stopFaceTimer = () => {
+  if (faceTimerRef.current) {
+    clearInterval(faceTimerRef.current);
+    faceTimerRef.current = null;
   }
-}, [violations.length]);
 
-  /* ================= FACE POPUP ================= */
-  const [facePopup, setFacePopup] = useState(false);
-  const [faceCountdown, setFaceCountdown] = useState(FACE_LIMIT);
-  const faceTimerRef = useRef<number | null>(null);
-const startFacePopup = () => {
-  setFacePopup(true);
-};
-
-const cancelFacePopup = () => {
-  setFacePopup(false);
+  setFaceWarning(false);
+  setFaceCountdown(FACE_TIMEOUT);
 };
 
 
-  /* ================= AUDIO ================= */
+  /* =======================
+     AUDIO
+     ======================= */
   const warningAudioRef = useRef<HTMLAudioElement | null>(null);
-  if (!warningAudioRef.current) {
-    warningAudioRef.current = new Audio(warningSound);
-  }
 
-  /* ================= TIMER ================= */
+  useEffect(() => {
+    warningAudioRef.current = new Audio(warningSound);
+    return () => {
+      warningAudioRef.current?.pause();
+    };
+  }, []);
+
+  /* =======================
+     TIMER
+     ======================= */
   const timeLeft = useTimer(examStartTime, duration);
   const h = Math.floor(timeLeft / 3600);
   const m = Math.floor((timeLeft % 3600) / 60);
   const s = timeLeft % 60;
 
-  /* ================= PROCTORING ================= */
+  /* =======================
+     PROCTORING
+     ======================= */
   useProctoring(examStatus === "ongoing" ? addViolationWithToast : () => {});
 
   useAutoSave(activeExamId, {
@@ -89,54 +127,47 @@ const cancelFacePopup = () => {
     examStatus,
   });
 
-  /* ================= LIVE WEBCAM (NO SNAPSHOTS) ================= */
-  const webcamRef = useRef<HTMLVideoElement>(null);
+  const webcamRef = useWebcamProctoring(activeExamId, examStatus === "ongoing");
 
-  useEffect(() => {
-    if (examStatus !== "ongoing") return;
+ const faceStatusRef = useFaceProctoring(
+  webcamRef,
+  examStatus === "ongoing"
+);
+useEffect(() => {
+  if (faceStatusRef.current === "NO_FACE") {
+    startFaceTimer();
+  }
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        if (webcamRef.current) {
-          webcamRef.current.srcObject = stream;
-        }
-      })
-      .catch(() => {
-        addViolationWithToast("CAMERA_PERMISSION_DENIED");
-      });
+  if (faceStatusRef.current === "FACE_OK") {
+    stopFaceTimer();
+  }
 
-    return () => {
-      const stream = webcamRef.current?.srcObject as MediaStream | null;
-      stream?.getTracks().forEach((t) => t.stop());
-    };
-  }, [examStatus]);
+  if (faceStatusRef.current === "MULTIPLE_FACES") {
+    addViolationWithToast("MULTIPLE_FACES_DETECTED");
+  }
+}, [faceStatusRef.current]);
 
-  /* ================= FACE PROCTORING ================= */
-  useFaceProctoring(
-    webcamRef,
-    examStatus === "ongoing",
-    startFacePopup,
-    cancelFacePopup,
-    addViolationWithToast
-  );
 
-  /* ================= FULLSCREEN ================= */
+  /* =======================
+     FULLSCREEN
+     ======================= */
   const [fullscreenWarning, setFullscreenWarning] = useState(false);
   const [fullscreenCountdown, setFullscreenCountdown] = useState(5);
-  const fullscreenTimerRef = useRef<number | null>(null);
+  const fullscreenTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const returnToFullscreen = async () => {
-    await document.documentElement.requestFullscreen();
-    setFullscreenWarning(false);
-
-    if (fullscreenTimerRef.current) {
-      clearInterval(fullscreenTimerRef.current);
-      fullscreenTimerRef.current = null;
+    try {
+      await document.documentElement.requestFullscreen();
+      setFullscreenWarning(false);
+      if (fullscreenTimerRef.current) {
+        clearInterval(fullscreenTimerRef.current);
+        fullscreenTimerRef.current = null;
+      }
+      warningAudioRef.current?.pause();
+      if (warningAudioRef.current) warningAudioRef.current.currentTime = 0;
+    } catch (err) {
+      console.error("Fullscreen failed", err);
     }
-
-    warningAudioRef.current?.pause();
-    warningAudioRef.current!.currentTime = 0;
   };
 
   useEffect(() => {
@@ -147,10 +178,15 @@ const cancelFacePopup = () => {
         setFullscreenCountdown(5);
         addViolationWithToast("EXIT_FULLSCREEN");
 
-        fullscreenTimerRef.current = window.setInterval(() => {
+        if (fullscreenTimerRef.current) {
+          clearInterval(fullscreenTimerRef.current);
+        }
+
+        fullscreenTimerRef.current = setInterval(() => {
           setFullscreenCountdown((c) => {
             if (c === 1) {
               clearInterval(fullscreenTimerRef.current!);
+              fullscreenTimerRef.current = null;
               submitExam();
               navigate("/");
               return 0;
@@ -162,11 +198,12 @@ const cancelFacePopup = () => {
     };
 
     document.addEventListener("fullscreenchange", handler);
-    return () =>
-      document.removeEventListener("fullscreenchange", handler);
-  }, [examStatus]);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, [examStatus, submitExam, navigate]);
 
-  /* ================= AUTO SUBMIT ================= */
+  /* =======================
+     AUTO SUBMIT
+     ======================= */
   useEffect(() => {
     if (
       (timeLeft === 0 && examStatus === "ongoing") ||
@@ -175,7 +212,7 @@ const cancelFacePopup = () => {
       submitExam();
       navigate("/");
     }
-  }, [timeLeft, examStatus, violations.length]);
+  }, [timeLeft, examStatus, violations.length, submitExam, navigate]);
 
   if (examStatus !== "ongoing") {
     return <p className="exam-empty">No active exam</p>;
@@ -188,40 +225,43 @@ const cancelFacePopup = () => {
     <div className="exam-container">
       {toast && (
         <div className="exam-toast">
-          ⚠️ {toast.message} — Remaining {toast.remaining}/{MAX_VIOLATIONS}
+          {toast.message} — Remaining {toast.remaining}/{MAX_VIOLATIONS}
         </div>
       )}
 
       <div className="webcam-box">
-        <video ref={webcamRef} autoPlay muted playsInline />
+        <video
+          ref={webcamRef}
+          muted
+          autoPlay
+          playsInline
+          style={{ width: "100%", height: "100%" }}
+        />
       </div>
 
-      {/* FACE NOT DETECTED */}
-      {facePopup && !fullscreenWarning && (
+      {faceWarning && !fullscreenWarning && (
         <div className="overlay">
           <div className="overlay-card">
-            <h2>Face Not Detected</h2>
+            <h2>Face not detected</h2>
             <p>
-              Violation in <strong>{faceCountdown}</strong> seconds
+              Violation in <strong>{faceCountdown}s</strong>
             </p>
-            <p>Please return to camera</p>
-            <button className="primary" onClick={cancelFacePopup}>
+            <button className="primary" onClick={stopFaceTimer}>
               OK
             </button>
           </div>
         </div>
       )}
 
-      {/* FULLSCREEN */}
       {fullscreenWarning && (
         <div className="overlay">
-          <div className="overlay-card">
-            <h2>Fullscreen Required</h2>
+          <div className="overlay-card fullscreen">
+            <h2>Fullscreen required</h2>
             <p>
-              Returning in <strong>{fullscreenCountdown}</strong> seconds
+              Auto submit in <strong>{fullscreenCountdown}s</strong>
             </p>
             <button className="primary" onClick={returnToFullscreen}>
-              Back to Fullscreen
+              Return to fullscreen
             </button>
           </div>
         </div>
@@ -233,9 +273,11 @@ const cancelFacePopup = () => {
             Question {currentQuestionIndex + 1} of {questions.length}
           </h2>
           <span className="exam-timer">
-            {h}:{m.toString().padStart(2, "0")}:
-            {s.toString().padStart(2, "0")}
+            {h}:{m.toString().padStart(2, "0")}:{s.toString().padStart(2, "0")}
           </span>
+          <div className="violations-count">
+            Violations: {violations.length}/{MAX_VIOLATIONS}
+          </div>
         </div>
 
         <h3 className="exam-question">{q.question}</h3>
@@ -245,6 +287,7 @@ const cancelFacePopup = () => {
             <label key={i} className="option-card">
               <input
                 type="radio"
+                name={`question-${q.id}`}
                 checked={selected === i}
                 onChange={() => selectAnswer(q.id, i)}
               />
@@ -263,7 +306,7 @@ const cancelFacePopup = () => {
             disabled={currentQuestionIndex === 0}
             onClick={goToPreviousQuestion}
           >
-            ← Previous
+            Previous
           </button>
 
           {currentQuestionIndex === questions.length - 1 ? (
@@ -274,11 +317,11 @@ const cancelFacePopup = () => {
                 navigate("/");
               }}
             >
-              Submit
+              Submit Exam
             </button>
           ) : (
             <button className="primary" onClick={goToNextQuestion}>
-              Next →
+              Next
             </button>
           )}
         </div>

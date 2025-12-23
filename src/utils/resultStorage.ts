@@ -13,7 +13,7 @@ export interface ExamResultSnapshot {
   examOutcome: "PASSED" | "FLAGGED" | "DISQUALIFIED";
   violations: Violation[];
 
-  answers: Record<number, number>; // ✅ ADD THIS
+  answers: Record<number, number>; //  ADD THIS
 }
 
 const STORAGE_KEY = "exam-results";

@@ -1,6 +1,6 @@
 import { exams } from "../data/exams";
 
-const STORAGE_KEY = "exam-results"; // ✅ MUST MATCH resultStorage.ts
+const STORAGE_KEY = "exam-results"; //  MUST MATCH resultStorage.ts
 
 export function seedDemoData() {
   // Do NOT override real user data

@@ -1,127 +1,175 @@
-import { useEffect, useRef } from "react";
-import * as faceapi from "face-api.js";
-import type { ViolationType } from "../context/ExamContext";
+// import { useEffect, useRef, useCallback } from "react";
+// import * as faceapi from "face-api.js";
+// import type { ViolationType } from "../context/ExamContext";
 
-const CHECK_INTERVAL = 1000;
-const NO_FACE_LIMIT = 5;       // seconds
-const MULTI_FACE_LIMIT = 5;    // seconds
-const MULTI_FACE_COOLDOWN = 2000; // ms
+// const CHECK_INTERVAL = 1500;
+// const MODEL_PATH = `${import.meta.env.BASE_URL}models`;
+// const MULTI_FACE_COOLDOWN = 5000;
+
+// export function useFaceProctoring(
+//   videoRef: React.RefObject<HTMLVideoElement | null>,
+//   enabled: boolean,
+//   onNoFaceStart: () => void,
+//   onFaceReturn: () => void,
+//   onViolation: (type: ViolationType) => void
+// ) {
+//   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+//   const modelsLoaded = useRef(false);
+//   const facePresent = useRef(true);
+//   const lastMultiFaceTime = useRef(0);
+
+//   /* LOAD MODELS ONCE */
+//   useEffect(() => {
+//     const load = async () => {
+//       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_PATH);
+//       await faceapi.nets.faceLandmark68TinyNet.loadFromUri(MODEL_PATH);
+//       modelsLoaded.current = true;
+//       console.log("Face-api models loaded");
+//     };
+//     load();
+//   }, []);
+
+//   const checkFaces = useCallback(async () => {
+//     if (!enabled || !videoRef.current || !modelsLoaded.current) return;
+
+//     const detections = await faceapi.detectAllFaces(
+//       videoRef.current,
+//       new faceapi.TinyFaceDetectorOptions({
+//         inputSize: 416,
+//         scoreThreshold: 0.2,
+//       })
+//     );
+
+//     console.log("Detections:", detections.length);
+
+//     /* NO FACE */
+//     if (detections.length === 0) {
+//       if (facePresent.current) {
+//         facePresent.current = false;
+//         onNoFaceStart();
+//       }
+//       return;
+//     }
+
+//     /* FACE RETURNED */
+//     if (!facePresent.current) {
+//       facePresent.current = true;
+//       onFaceReturn();
+//     }
+
+//     /* MULTIPLE FACES */
+//     if (detections.length > 1) {
+//       const now = Date.now();
+//       if (now - lastMultiFaceTime.current >= MULTI_FACE_COOLDOWN) {
+//         lastMultiFaceTime.current = now;
+//         onViolation("MULTIPLE_FACES_DETECTED");
+//       }
+//     }
+//   }, [enabled, videoRef, onNoFaceStart, onFaceReturn, onViolation]);
+
+//   /* START DETECTION ONLY ONCE */
+//   useEffect(() => {
+//     if (!enabled || !videoRef.current || intervalRef.current) return;
+
+//     const video = videoRef.current;
+
+//     const start = () => {
+//       if (intervalRef.current) return;
+//       console.log("Starting face detection loop");
+//       checkFaces();
+//       intervalRef.current = setInterval(checkFaces, CHECK_INTERVAL);
+//     };
+
+//     video.addEventListener("canplay", start);
+
+//     return () => {
+//       video.removeEventListener("canplay", start);
+//       if (intervalRef.current) {
+//         clearInterval(intervalRef.current);
+//         intervalRef.current = null;
+//       }
+//     };
+//   }, [enabled, checkFaces, videoRef]);
+// }
+import { useEffect, useRef, useCallback } from "react";
+import * as faceapi from "face-api.js";
+
+export type FaceStatus = "FACE_OK" | "NO_FACE" | "MULTIPLE_FACES";
+
+const CHECK_INTERVAL = 1500;
+const MODEL_PATH = `${import.meta.env.BASE_URL}models`;
+const MULTI_FACE_COOLDOWN = 5000;
 
 export function useFaceProctoring(
   videoRef: React.RefObject<HTMLVideoElement | null>,
-  enabled: boolean,
-  onNoFaceStart: () => void,
-  onNoFaceCancel: () => void,
-  onViolation: (type: ViolationType) => void
+  enabled: boolean
 ) {
-  const intervalRef = useRef<number | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const modelsLoaded = useRef(false);
-  const detecting = useRef(false);
+  const lastMultiFaceTime = useRef(0);
+  const faceStatusRef = useRef<FaceStatus>("FACE_OK");
 
-  const noFaceSeconds = useRef(0);
-  const multiFaceSeconds = useRef(0);
-  const multiFaceBlockedUntil = useRef(0);
-  const noFacePopupActive = useRef(false);
-
-  /* ================= LOAD MODEL ================= */
+  /* LOAD MODELS */
   useEffect(() => {
-    faceapi.nets.tinyFaceDetector
-      .loadFromUri(`${import.meta.env.BASE_URL}models`)
-      .then(() => {
-        modelsLoaded.current = true;
-      });
+    const load = async () => {
+      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_PATH);
+      await faceapi.nets.faceLandmark68TinyNet.loadFromUri(MODEL_PATH);
+      modelsLoaded.current = true;
+      console.log("Face-api models loaded");
+    };
+    load();
   }, []);
 
-  /* ================= DETECTION LOOP ================= */
-  useEffect(() => {
-    if (!enabled || !modelsLoaded.current) return;
+  const checkFaces = useCallback(async () => {
+    if (!enabled || !videoRef.current || !modelsLoaded.current) return;
 
-    let cancelled = false;
+    const detections = await faceapi.detectAllFaces(
+      videoRef.current,
+      new faceapi.TinyFaceDetectorOptions({
+        inputSize: 416,
+        scoreThreshold: 0.2,
+      })
+    );
 
-    const waitForVideo = async () => {
-      while (
-        !cancelled &&
-        (!videoRef.current ||
-          videoRef.current.readyState < 3 ||
-          videoRef.current.videoWidth === 0)
-      ) {
-        await new Promise((r) => setTimeout(r, 200));
+    if (detections.length === 0) {
+      faceStatusRef.current = "NO_FACE";
+      return;
+    }
+
+    if (detections.length > 1) {
+      const now = Date.now();
+      if (now - lastMultiFaceTime.current >= MULTI_FACE_COOLDOWN) {
+        lastMultiFaceTime.current = now;
+        faceStatusRef.current = "MULTIPLE_FACES";
       }
+      return;
+    }
+
+    faceStatusRef.current = "FACE_OK";
+  }, [enabled, videoRef]);
+
+  /* START LOOP */
+  useEffect(() => {
+    if (!enabled || !videoRef.current || intervalRef.current) return;
+
+    const video = videoRef.current;
+
+    const start = () => {
+      if (intervalRef.current) return;
+      console.log("Starting face detection loop");
+      intervalRef.current = setInterval(checkFaces, CHECK_INTERVAL);
     };
 
-    const start = async () => {
-      await waitForVideo();
-      if (cancelled) return;
-
-      intervalRef.current = window.setInterval(async () => {
-        if (detecting.current) return;
-        detecting.current = true;
-
-        try {
-          const video = videoRef.current;
-          if (!video) return;
-
-          const detections = await faceapi.detectAllFaces(
-            video,
-            new faceapi.TinyFaceDetectorOptions({
-              inputSize: 416,
-              scoreThreshold: 0.3,
-            })
-          );
-
-          const faceCount = detections.length;
-          const now = Date.now();
-
-          /* ---------- NO FACE ---------- */
-          if (faceCount === 0) {
-            noFaceSeconds.current++;
-
-            if (!noFacePopupActive.current) {
-              noFacePopupActive.current = true;
-              onNoFaceStart();
-            }
-
-            if (noFaceSeconds.current >= NO_FACE_LIMIT) {
-              onViolation("NO_FACE_DETECTED");
-
-              // reset
-              noFaceSeconds.current = 0;
-              noFacePopupActive.current = false;
-              onNoFaceCancel();
-            }
-          } else {
-            noFaceSeconds.current = 0;
-            if (noFacePopupActive.current) {
-              noFacePopupActive.current = false;
-              onNoFaceCancel();
-            }
-          }
-
-          /* ---------- MULTIPLE FACES ---------- */
-          if (faceCount > 1 && now > multiFaceBlockedUntil.current) {
-            multiFaceSeconds.current++;
-
-            if (multiFaceSeconds.current >= MULTI_FACE_LIMIT) {
-              onViolation("MULTIPLE_FACES_DETECTED");
-
-              multiFaceSeconds.current = 0;
-              multiFaceBlockedUntil.current =
-                now + MULTI_FACE_COOLDOWN;
-            }
-          } else {
-            multiFaceSeconds.current = 0;
-          }
-        } finally {
-          detecting.current = false;
-        }
-      }, CHECK_INTERVAL);
-    };
-
-    start();
+    video.addEventListener("canplay", start);
 
     return () => {
-      cancelled = true;
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      video.removeEventListener("canplay", start);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
-  }, [enabled, videoRef, onNoFaceStart, onNoFaceCancel, onViolation]);
+  }, [enabled, checkFaces, videoRef]);
+
+  return faceStatusRef;
 }
